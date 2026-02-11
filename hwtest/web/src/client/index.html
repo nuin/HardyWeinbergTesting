@@ -10,44 +10,47 @@
   <div id="app">
     <header>
       <h1>Hardy-Weinberg Equilibrium Test</h1>
-      <p class="subtitle">Santos, Lemes &amp; Otto (2020)</p>
+      <p class="subtitle">Santos, Lemes &amp; Otto (2020) &mdash; DOI: 10.1590/1678-4685-GMB-2019-0380</p>
     </header>
 
     <main>
-      <!-- Step 1: Allele count -->
-      <section id="step-alleles" class="step active">
-        <h2>Number of Alleles</h2>
-        <div class="form-group">
-          <label for="n-alleles">Choose between 2 and 12:</label>
-          <input type="number" id="n-alleles" min="2" max="12" value="2" />
-          <button id="btn-next-alleles" class="btn-primary">Next</button>
-        </div>
-      </section>
+      <!-- Input section -->
+      <section id="input-section">
+        <div class="input-row">
+          <div id="allele-selector" class="card">
+            <h2>Alleles</h2>
+            <div class="form-group">
+              <label for="n-alleles">Number of alleles:</label>
+              <input type="number" id="n-alleles" min="2" max="12" value="2" />
+            </div>
+          </div>
 
-      <!-- Step 2: Test selection + data entry -->
-      <section id="step-input" class="step hidden">
-        <div class="panels">
-          <div id="test-selector"></div>
-          <div id="data-entry"></div>
+          <div id="test-selector" class="card">
+            <h2>Statistical Tests</h2>
+          </div>
+
+          <div id="data-entry" class="card">
+            <h2>Genotype Data</h2>
+          </div>
         </div>
-        <div class="actions">
-          <button id="btn-back" class="btn-secondary">Back</button>
+
+        <div class="run-bar">
           <button id="btn-run" class="btn-primary">Run Tests</button>
+          <span id="status-msg"></span>
         </div>
       </section>
 
-      <!-- Step 3: Results -->
-      <section id="step-results" class="step hidden">
-        <div id="results-table"></div>
-        <div id="ternary-plot"></div>
-        <div class="actions">
-          <button id="btn-new" class="btn-secondary">New Test</button>
+      <!-- Results section -->
+      <section id="results-section" class="hidden">
+        <div class="results-row">
+          <div id="results-table" class="card"></div>
+          <div id="ternary-plot" class="card"></div>
         </div>
       </section>
     </main>
 
     <footer>
-      <p>Copyright 2006-2019 by Fernando A. Bautzer Santos, Renan B. Lemes &amp; Paulo A. Otto</p>
+      <p>Copyright 2006-2019 Fernando A. Bautzer Santos, Renan B. Lemes &amp; Paulo A. Otto</p>
       <p>Departamento de Genetica e Biologia Evolutiva, Universidade de Sao Paulo</p>
     </footer>
   </div>

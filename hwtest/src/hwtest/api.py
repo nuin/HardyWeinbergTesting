@@ -66,6 +66,10 @@ def run_test(request: TwoAlleleRequest | MultiAlleleRequest) -> dict[str, Any]:
             )
             return {
                 "type": "two_allele",
+                "n": data.n,
+                "d": data.d,
+                "h": data.h,
+                "r": data.r,
                 "p_freq": results.p_freq,
                 "q_freq": results.q_freq,
                 "test_results": [

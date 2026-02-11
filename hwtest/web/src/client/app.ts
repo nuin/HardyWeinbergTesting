@@ -1,10 +1,9 @@
-import { AlleleSelector } from "./components/AlleleSelector.js";
 import { TestSelector } from "./components/TestSelector.js";
 import { DataEntry } from "./components/DataEntry.js";
 import { ResultsTable } from "./components/ResultsTable.js";
 import { TernaryPlot } from "./components/TernaryPlot.js";
 
-interface TestResult {
+interface TestResultItem {
   test: string;
   label: string;
   statistic: number | null;
@@ -17,72 +16,63 @@ interface ApiResponse {
   p_freq?: number;
   q_freq?: number;
   allele_freqs?: number[];
-  test_results: TestResult[];
+  test_results: TestResultItem[];
 }
 
 class HWTestApp {
-  private nAlleles = 2;
-  private alleleSelector: AlleleSelector;
   private testSelector: TestSelector;
   private dataEntry: DataEntry;
   private resultsTable: ResultsTable;
   private ternaryPlot: TernaryPlot;
 
   constructor() {
-    this.alleleSelector = new AlleleSelector();
     this.testSelector = new TestSelector();
     this.dataEntry = new DataEntry();
     this.resultsTable = new ResultsTable();
     this.ternaryPlot = new TernaryPlot();
 
-    this.setupEventListeners();
+    this.init();
   }
 
-  private setupEventListeners(): void {
-    document.getElementById("btn-next-alleles")?.addEventListener("click", () => {
-      const input = document.getElementById("n-alleles") as HTMLInputElement;
-      const n = parseInt(input.value);
-      if (n < 2 || n > 12 || isNaN(n)) {
-        alert("Choose a number between 2 and 12.");
-        return;
-      }
-      this.nAlleles = n;
-      this.showStep("step-input");
-      this.testSelector.render(
-        document.getElementById("test-selector")!,
-        n
-      );
-      this.dataEntry.render(
-        document.getElementById("data-entry")!,
-        n
-      );
-    });
+  private init(): void {
+    const nAllelesInput = document.getElementById("n-alleles") as HTMLInputElement;
+    const testContainer = document.getElementById("test-selector")!;
+    const dataContainer = document.getElementById("data-entry")!;
 
-    document.getElementById("btn-back")?.addEventListener("click", () => {
-      this.showStep("step-alleles");
+    // Initial render
+    const n = parseInt(nAllelesInput.value);
+    this.testSelector.render(testContainer, n);
+    this.dataEntry.render(dataContainer, n);
+
+    // Re-render when allele count changes
+    nAllelesInput.addEventListener("change", () => {
+      const newN = parseInt(nAllelesInput.value);
+      if (newN >= 2 && newN <= 12) {
+        this.testSelector.render(testContainer, newN);
+        this.dataEntry.render(dataContainer, newN);
+        document.getElementById("results-section")?.classList.add("hidden");
+      }
     });
 
     document.getElementById("btn-run")?.addEventListener("click", () => {
       this.runTests();
     });
-
-    document.getElementById("btn-new")?.addEventListener("click", () => {
-      this.showStep("step-alleles");
-    });
-  }
-
-  private showStep(stepId: string): void {
-    document.querySelectorAll(".step").forEach((el) => el.classList.add("hidden"));
-    document.getElementById(stepId)?.classList.remove("hidden");
   }
 
   private async runTests(): Promise<void> {
+    const nAllelesInput = document.getElementById("n-alleles") as HTMLInputElement;
+    const nAlleles = parseInt(nAllelesInput.value);
     const tests = this.testSelector.getSelectedTests();
-    const data = this.dataEntry.getData(this.nAlleles);
+    const data = this.dataEntry.getData(nAlleles);
+    const statusMsg = document.getElementById("status-msg")!;
+    const btn = document.getElementById("btn-run") as HTMLButtonElement;
 
     if (!data) return;
 
     const body: Record<string, unknown> = { ...data, tests };
+
+    btn.disabled = true;
+    statusMsg.textContent = "Running tests...";
 
     try {
       const response = await fetch("/api/test", {
@@ -93,23 +83,23 @@ class HWTestApp {
 
       if (!response.ok) {
         const err = await response.json();
-        alert(`Error: ${err.detail || "Unknown error"}`);
+        statusMsg.textContent = `Error: ${err.detail || "Unknown error"}`;
+        btn.disabled = false;
         return;
       }
 
       const result: ApiResponse = await response.json();
-      this.showStep("step-results");
-      this.resultsTable.render(
-        document.getElementById("results-table")!,
-        result
-      );
-      this.ternaryPlot.render(
-        document.getElementById("ternary-plot")!,
-        result,
-        this.nAlleles
-      );
+      statusMsg.textContent = "";
+
+      document.getElementById("results-section")?.classList.remove("hidden");
+      this.resultsTable.render(document.getElementById("results-table")!, result);
+      this.ternaryPlot.render(document.getElementById("ternary-plot")!, result, nAlleles);
+
+      document.getElementById("results-section")?.scrollIntoView({ behavior: "smooth" });
     } catch {
-      alert("Failed to connect to the server. Is the backend running?");
+      statusMsg.textContent = "Failed to connect. Is the backend running?";
+    } finally {
+      btn.disabled = false;
     }
   }
 }
