@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hardy-Weinberg Equilibrium Test</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Hardy-Weinberg Equilibrium Test</h1>
+      <p class="subtitle">Santos, Lemes &amp; Otto (2020)</p>
+    </header>
+
+    <main>
+      <!-- Step 1: Allele count -->
+      <section id="step-alleles" class="step active">
+        <h2>Number of Alleles</h2>
+        <div class="form-group">
+          <label for="n-alleles">Choose between 2 and 12:</label>
+          <input type="number" id="n-alleles" min="2" max="12" value="2" />
+          <button id="btn-next-alleles" class="btn-primary">Next</button>
+        </div>
+      </section>
+
+      <!-- Step 2: Test selection + data entry -->
+      <section id="step-input" class="step hidden">
+        <div class="panels">
+          <div id="test-selector"></div>
+          <div id="data-entry"></div>
+        </div>
+        <div class="actions">
+          <button id="btn-back" class="btn-secondary">Back</button>
+          <button id="btn-run" class="btn-primary">Run Tests</button>
+        </div>
+      </section>
+
+      <!-- Step 3: Results -->
+      <section id="step-results" class="step hidden">
+        <div id="results-table"></div>
+        <div id="ternary-plot"></div>
+        <div class="actions">
+          <button id="btn-new" class="btn-secondary">New Test</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Copyright 2006-2019 by Fernando A. Bautzer Santos, Renan B. Lemes &amp; Paulo A. Otto</p>
+      <p>Departamento de Genetica e Biologia Evolutiva, Universidade de Sao Paulo</p>
+    </footer>
+  </div>
+
+  <script type="module" src="app.ts"></script>
+</body>
+</html>

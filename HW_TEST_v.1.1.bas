@@ -66,7 +66,7 @@ CHECKBOX #Win001.CheckBox002, "Chi-square with Yates' correction", [win001_cb2_o
 CHECKBOX #Win001.CheckBox003, "Chi-square with Hogben/Levene correction", [win001_cb3_on], [win001_cb3_off], WW/2-310, 210, 240, 20
 CHECKBOX #Win001.CheckBox004, "Chi-square with Cannings and Edwards correction", [win001_cb4_on], [win001_cb4_off], WW/2-310, 240, 260, 20
 CHECKBOX #Win001.CheckBox005, "G or log-likelihood test without correction", [win001_cb5_on], [win001_cb5_off], WW/2-310, 270, 240, 20
-CHECKBOX #Win001.CheckBox006, "log-likelihood test with cotinuity correction", [win001_cb6_on], [win001_cb6_off], WW/2-310, 300, 240, 20
+CHECKBOX #Win001.CheckBox006, "log-likelihood test with continuity correction", [win001_cb6_on], [win001_cb6_off], WW/2-310, 300, 240, 20
 CHECKBOX #Win001.CheckBox007, "Fisher's exact test", [win001_cb7_on], [win001_cb7_off], WW/2-310, 330, 240, 20
 CHECKBOX #Win001.CheckBox008, "Haldane's exact test", [win001_cb8_on], [win001_cb8_off], WW/2-310, 360, 240, 20
 CHECKBOX #Win001.CheckBox009, "Exact probability by simulation", [win001_cb9_on], [win001_cb9_off], WW/2-310, 390, 240, 20
@@ -383,7 +383,7 @@ PRINT #Win002, using("####",D); : PRINT #Win002, "       ";
 PRINT #Win002, using("####",H); : PRINT #Win002, "       ";
 PRINT #Win002, using("####",R); : PRINT #Win002, "       ";
 PRINT #Win002, using("####",N)
-PRINT #Win002, "exp. abs .freq. (without correction)  ";
+PRINT #Win002, "exp. abs. freq. (without correction)  ";
 PRINT #Win002, using("####.###",DE0); : PRINT #Win002, "   ";
 PRINT #Win002, using("####.###",HE0); : PRINT #Win002, "   ";
 PRINT #Win002, using("####.###",RE0); : PRINT #Win002, "   ";
@@ -1048,7 +1048,7 @@ FOR i = 1 TO NGenot
 NEXT i
 IF TempVar = 1 THEN WAIT
 
-DIM Genot(NAll, NAll), All(NAall), P(NAll)
+DIM Genot(NAll, NAll), All(NAll), P(NAll)
 k = 0
 FOR i = 1 TO NAll
   FOR j = 1 TO i

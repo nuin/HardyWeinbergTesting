@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hwtest"
+version = "2.0.0"
+description = "Hardy-Weinberg Equilibrium Testing (Santos, Lemes & Otto, 2020)"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [
+    { name = "Fernando A. Bautzer Santos" },
+    { name = "Renan B. Lemes" },
+    { name = "Paulo A. Otto", email = "otto@usp.br" },
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+cli = ["typer>=0.9", "rich>=13.0"]
+tui = ["textual>=0.40"]
+api = ["fastapi>=0.100", "uvicorn>=0.23"]
+plot = ["matplotlib>=3.7"]
+dev = [
+    "pytest>=7.0",
+    "httpx>=0.24",
+    "ruff>=0.1",
+    "mypy>=1.5",
+]
+all = ["hwtest[cli,tui,api,plot,dev]"]
+
+[project.scripts]
+hwtest = "hwtest.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hwtest"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
